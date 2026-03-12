@@ -108,6 +108,76 @@
   handlePinLabels();
   window.addEventListener("resize", handlePinLabels, { passive: true });
 
+  /* ── Contact form submission (Formspree) ── */
+  const contactForm = document.getElementById("contact-form");
+  const formStatus = document.getElementById("form-status");
+
+  if (contactForm && formStatus) {
+    contactForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const submitBtn = contactForm.querySelector("button[type='submit']");
+      submitBtn.disabled = true;
+      formStatus.textContent = "";
+      formStatus.className = "form-status";
+
+      try {
+        const response = await fetch(contactForm.action, {
+          method: "POST",
+          body: new FormData(contactForm),
+          headers: { Accept: "application/json" },
+        });
+
+        if (response.ok) {
+          formStatus.textContent =
+            document.documentElement.lang === "pt-BR"
+              ? "✓ Solicitação enviada com sucesso! Entraremos em contato em breve."
+              : "✓ ¡Solicitud enviada con éxito! Nos pondremos en contacto pronto.";
+          formStatus.classList.add("form-status--ok");
+          contactForm.reset();
+          if (typeof gtag === "function") {
+            gtag("event", "form_submit", {
+              event_category: "contact",
+              event_label: "solicitar_evaluacion",
+            });
+          }
+        } else {
+          throw new Error("server");
+        }
+      } catch {
+        formStatus.textContent =
+          document.documentElement.lang === "pt-BR"
+            ? "Ocorreu um erro ao enviar. Por favor, tente novamente."
+            : "Ocurrió un error al enviar. Por favor, inténtalo de nuevo.";
+        formStatus.classList.add("form-status--error");
+        submitBtn.disabled = false;
+      }
+    });
+  }
+
+  /* ── GA4 click events ───────────────────── */
+  document.querySelectorAll('a[href*="wa.me"]').forEach((el) => {
+    el.addEventListener("click", () => {
+      if (typeof gtag === "function") {
+        gtag("event", "whatsapp_click", {
+          event_category: "contact",
+          event_label: el.classList.contains("whatsapp-btn") ? "boton_cta" : "topbar",
+        });
+      }
+    });
+  });
+
+  document.querySelectorAll('a[href^="tel:"]').forEach((el) => {
+    el.addEventListener("click", () => {
+      if (typeof gtag === "function") {
+        gtag("event", "phone_click", {
+          event_category: "contact",
+          event_label: el.textContent.trim(),
+        });
+      }
+    });
+  });
+
   /* ── Language auto-detection ────────────── */
   // Only runs on the root page (PT version), not inside /es/
   const isEsPage = window.location.pathname.includes("/es");

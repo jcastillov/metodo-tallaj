@@ -555,6 +555,23 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   justify-content: center;
   margin-top: 0.5rem;
 }
+.form-status {
+  font-size: 0.9rem;
+  padding: 0.6rem 0.9rem;
+  border-radius: 6px;
+  display: none;
+}
+.form-status:not(:empty) {
+  display: block;
+}
+.form-status--ok {
+  background: #e6f4ea;
+  color: #1e6e35;
+}
+.form-status--error {
+  background: #fce8e6;
+  color: #c0392b;
+}
 
 
 /* ==========================================

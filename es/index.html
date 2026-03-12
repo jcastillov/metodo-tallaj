@@ -1,6 +1,15 @@
 <!doctype html>
 <html lang="es">
   <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8FG41ZZ95Y"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-8FG41ZZ95Y');
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Método Tallaj® – Medicina de Excelencia</title>
@@ -565,7 +574,9 @@
             </div>
 
             <div class="contact-form-wrapper">
-              <form class="contact-form" action="#" method="POST" onsubmit="event.preventDefault(); alert('¡Formulario enviado con éxito!');">
+              <form class="contact-form" id="contact-form" action="https://formspree.io/f/mzdjgbeb" method="POST">
+                <input type="hidden" name="_bcc" value="juan.castillov8@gmail.com" />
+                <input type="hidden" name="_subject" value="Nueva solicitud de evaluación – Método Tallaj®" />
                 <h3 class="form-title">Solicitar Evaluación</h3>
 
                 <div class="form-group">
@@ -602,6 +613,8 @@
                   <label for="message">Mensaje (Opcional)</label>
                   <textarea id="message" name="message" rows="3" placeholder="¿En qué podemos ayudarte?"></textarea>
                 </div>
+
+                <div id="form-status" class="form-status" role="alert" aria-live="polite"></div>
 
                 <button type="submit" class="btn btn-primary submit-btn">
                   ENVIAR SOLICITUD
